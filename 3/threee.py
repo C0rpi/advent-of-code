@@ -1,6 +1,5 @@
 import re
 
-
 with open("3/input.txt") as f: input = f.readlines()
 def one(input):
     res = 0
@@ -36,5 +35,47 @@ def one(input):
                         res+=val
                         break
     return(res)
+def two(input):  
+    res = 0  
+    for i,line1 in enumerate(input):
+        if not i == len(input)-1:
+            line2 = input[i+1]
+            nums_below = [(res.start(),res.end(),res.group())for res in re.finditer(r"\d+",line2)]
+        else:
+            line2 = None   
+            nums_below = None         
+        if not i == 0:
+            line0 = input[i-1]
+            nums_above =[(res.start(),res.end(),res.group())for res in re.finditer(r"\d+",line0)]
+        else:
+            line0 = None
+            nums_above = None
+            
+            
+        stars_in_row = re.finditer(r"\*",line1)
+        nums_in_row = [(res.start(),res.end(),res.group())for res in re.finditer(r"\d+(?=[\*])|(?<=[\*])\d+",line1)]
+        for star in stars_in_row:
+            adj_num = list()
+            index = star.start()
+            print([nl[2] for nl in nums_above])
+            for num in nums_above:
+                if (num[0]<=index and num[1]>=index) or (num[0]==index+1):
+                    adj_num.append(num[2])
+            for num in nums_below:
+                if (num[0]<=index and num[1]>=index) or (num[0]==index+1):
+                    adj_num.append(num[2])
+            for num in nums_in_row:
+                if (num[0]<=index and num[1]>=index) or (num[0]==index+1):
+                    adj_num.append(num[2])
+                    
+            if len(adj_num)==2:
+                res+=int(adj_num[0])*int(adj_num[1])
+            elif len(adj_num)>2:
+                print()
+    return res
+                    
+                
+            
 
 print(one(input))#528819
+print(two(input))#80403602
