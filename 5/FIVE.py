@@ -10,7 +10,7 @@ def one(input, seeds = None):
         for n in n_groups:
             num = [int(i.group()) for i in  re.finditer(r"\d+",n)]
             s_st = num[1]
-            r = num[2]   
+            r = num[2]
             diffs.append(num[0]-s_st)
             l.append([s_st,r])
         new_seeds = list()
@@ -39,7 +39,7 @@ def two(input):
         for sindex, source in enumerate(sources):
             for index,seed in enumerate(seeds):
                 if seed:
-                    if seed[0]> source[0] and seed[0] < source[1]:
+                    if seed[0]>= source[0] and seed[0] < source[1]:
                         
                         if seed[1]>=source[1]:
                             left = (seed[0]-diffs[sindex],source[1]-diffs[sindex])
@@ -52,25 +52,23 @@ def two(input):
                             new_seeds.append(left)
                             seeds[index] = None
                     
-                    elif seed[0]<source[0] and seed[1]>source[0]:
+                    elif seed[0]<source[0] and seed[1]>=source[0]:
                         if seed[1]>=source[1]:
                             _left = (seed[0],source[0])
-                            _middle = (source[0]+1-diffs[sindex],source[1]-diffs[sindex])
-                            _right = (source[1]+1,seed[1])
+                            _middle = (source[0]-diffs[sindex],source[1]-diffs[sindex])
+                            _right = (source[1],seed[1])
                             new_seeds.append(_left)
                             new_seeds.append(_middle)
                             new_seeds.append(_right)
                             seeds[index] = None
                         else:
                             left = (seed[0],source[0])
-                            right = (source[0]-diffs[sindex],seed[1]-diffs[sindex])#NOTE +1?
+                            right = (source[0]-diffs[sindex],seed[1]-diffs[sindex])
                             new_seeds.append(left)
                             new_seeds.append(right)
                             seeds[index] = None
+                            
         [new_seeds.append(seed) for seed in seeds if seed]
-        #for index,seed in enumerate(seeds):
-        #    if seed:
-        #        new_seeds.append(seed)
         seeds = new_seeds
     return min([seed[0] for seed in seeds])
         
