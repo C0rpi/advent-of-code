@@ -8,7 +8,7 @@ def one(input, seeds = None):
         diffs = list()
         n_groups = [i.group() for i in re.finditer(r"([ \n]\d+){3}",v)]
         for n in n_groups:
-            num = [int(i.group()) for i in  re.finditer(r"\d+",n)]
+            num = [int(i.group()) for i in re.finditer(r"\d+",n)]
             s_st = num[1]
             r = num[2]
             diffs.append(num[0]-s_st)
@@ -31,7 +31,7 @@ def two(input):
     ranges = [i.group().replace("\n"," ") for i in re.finditer(r"(?<=[^\d])([\d \n]+)(?=[^\d])",input) if not i.group() == ' ']
     seeds = [(i[0],i[0]+i[1]) for i in [[int(i.group()) for i in j] for j in [re.finditer(r"\d+",k) for k in [(i.group()) for i in re.finditer(r"([ \n]\d+){2}",ranges.pop(0))]]]]
     for v in ranges:
-        nums = [(n[0],n[0]+n[2],n[1],+n[1]+n[2]) for n in [[int(j.group())for j in i] for i in  [re.finditer(r"\d+",n) for n in [i.group() for i in re.finditer(r"([ \n]\d+){3}",v)]]]]
+        nums = [(n[0],n[0]+n[2],n[1],+n[1]+n[2]) for n in [[int(j.group())for j in i] for i in [re.finditer(r"\d+",n) for n in [i.group() for i in re.finditer(r"([ \n]\d+){3}",v)]]]]
         sources = [(i[2],i[3]) for i in nums]
         diffs = [i[2]-i[0] for i in nums]
         new_seeds = list()
@@ -69,6 +69,7 @@ def two(input):
                             seeds[index] = None
                             
         [new_seeds.append(seed) for seed in seeds if seed]
+        a = sorted(new_seeds)
         seeds = new_seeds
     return min([seed[0] for seed in seeds])
         
