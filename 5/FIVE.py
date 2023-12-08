@@ -36,43 +36,47 @@ def two(input):
         diffs = [i[2]-i[0] for i in nums]
         new_seeds = list()
         
-        for sindex, source in enumerate(sources):
-            for index,seed in enumerate(seeds):
-                if seed:
-                    if seed[0]>= source[0] and seed[0] < source[1]:
+        for index,seed in enumerate(seeds):
+            for sindex, source in enumerate(sources):
+                if seed and seed[0]<seed[1]:
+                    if seed[0]> source[0] and seed[0] < source[1]:
                         
-                        if seed[1]>=source[1]:
+                        if seed[1]>source[1]:
                             left = (seed[0]-diffs[sindex],source[1]-diffs[sindex])
                             right = (source[1],seed[1])
                             new_seeds.append(left)
-                            new_seeds.append(right)
+                            seeds.append(right)
+                            seed = None
                             seeds[index] = None
                         else:
                             left = (seed[0]-diffs[sindex],seed[1]-diffs[sindex])
                             new_seeds.append(left)
+                            seed = None
                             seeds[index] = None
                     
-                    elif seed[0]<source[0] and seed[1]>=source[0]:
-                        if seed[1]>=source[1]:
+                    elif seed[0]<=source[0] and seed[1]>source[0]:
+                        if seed[1]>source[1]:
                             _left = (seed[0],source[0])
                             _middle = (source[0]-diffs[sindex],source[1]-diffs[sindex])
                             _right = (source[1],seed[1])
-                            new_seeds.append(_left)
+                            seeds.append(_left)
                             new_seeds.append(_middle)
-                            new_seeds.append(_right)
+                            seeds.append(_right)
+                            seed = None
                             seeds[index] = None
                         else:
                             left = (seed[0],source[0])
                             right = (source[0]-diffs[sindex],seed[1]-diffs[sindex])
-                            new_seeds.append(left)
+                            seeds.append(left)
                             new_seeds.append(right)
+                            seed = None
                             seeds[index] = None
                             
         [new_seeds.append(seed) for seed in seeds if seed]
         a = sorted(new_seeds)
         seeds = new_seeds
+    a = sum(i[1]-i[0] for i in seeds)
     return min([seed[0] for seed in seeds])
         
 print(one(input))#309796150
-print(two(input))#not 15101795 
-                    # 50716416
+print(two(input))#50716416
